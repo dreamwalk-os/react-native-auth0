@@ -69,7 +69,7 @@ export default class Auth {
   }
 
   openBrowser(options) {
-    return A0Auth0.openBrowser(options)
+    return A0Auth0.showBrowser(options)
   }
 
   /**
