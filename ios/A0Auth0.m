@@ -59,6 +59,34 @@ RCT_EXPORT_METHOD(oauthParameters:(RCTResponseSenderBlock)callback) {
     callback(@[[self generateOAuthParameters]]);
 }
 
+RCT_EXPORT_METHOD(showBrowser:(NSDictionary *)args resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    // Error if no url is passed
+    if (!args[@"url"]) {
+        reject(@"E_SAFARI_VIEW_NO_URL", @"You must specify a url.", nil);
+        return;
+    }
+
+    NSString *url = args[@"url"];
+    BOOL readerMode = [args[@"readerMode"] boolValue];
+    UIColor *tintColorString = args[@"tintColor"];
+    UIColor *barTintColorString = args[@"barTintColor"];
+    BOOL fromBottom = [args[@"fromBottom"] boolValue];
+
+   if (@available(iOS 11.0, *)) {
+//         self.sessionCallback = callback;
+//         self.closeOnLoad = closeOnLoad;
+         [self presentAuthenticationSession:[NSURL URLWithString:url]];
+         resolve(@YES);
+     } else {
+         [self presentSafariWithURL:[NSURL URLWithString:url]];
+//         self.sessionCallback = callback;
+//         self.closeOnLoad = closeOnLoad;
+         resolve(@YES);
+     }
+    
+}
+
 - (NSDictionary *)constantsToExport {
     return @{ @"bundleIdentifier": [[NSBundle mainBundle] bundleIdentifier] };
 }
